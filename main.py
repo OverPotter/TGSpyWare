@@ -28,7 +28,7 @@ key_reg = OpenKey(HKEY_CURRENT_USER,
                   0, KEY_ALL_ACCESS)
 SetValueEx(key_reg, autoname, 0, REG_SZ, address)
 CloseKey(key_reg)
-
+#
 start = datetime.now()
 name = getpass.getuser()
 ip = socket.gethostbyname(socket.gethostname())
