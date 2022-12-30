@@ -19,7 +19,7 @@ from winreg import OpenKey, SetValueEx, CloseKey, HKEY_CURRENT_USER, KEY_ALL_ACC
 
 bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher(bot)
-£
+
 autoname = "FILENAME.py"
 path = os.path.dirname(os.path.realpath(__file__))
 address = os.path.join(path, autoname)
