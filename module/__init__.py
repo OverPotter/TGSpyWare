@@ -1,0 +1,1 @@
+from regedit import RegEdit
