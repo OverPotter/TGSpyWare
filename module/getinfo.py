@@ -21,12 +21,13 @@ class GetInfo:
         os_time = datetime.fromtimestamp(zone)
         cpu_data = psutil.cpu_freq()
 
-        result = (f"Operating System: {os_info.system}\n"
-                  f"Processor: {os_info.processor}\n"
-                  f"Username: {username}\n  IP adress: {ip}\n"
+        result = (f"Username: {username}\n"
+                  f"IP address: {ip}\n"
                   f"MAC address: {mac}\n"
                   f"Timezone: {os_time.year}/{os_time.month}/{os_time.day}"
                   f" {os_time.hour}:{os_time.minute}:{os_time.second}\n"
+                  f"Operating System: {os_info.system}\n"
+                  f"Processor: {os_info.processor}\n"
                   f"Max Frequency: {cpu_data.max:.2f} Mhz\n"
                   f"Min Frequency: {cpu_data.min:.2f} Mhz\n"
                   f"Current Frequency: {cpu_data.current:.2f} Mhz\n")
