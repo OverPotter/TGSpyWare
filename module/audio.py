@@ -35,7 +35,3 @@ class AudioRecording:
         wf.setframerate(rate)
         wf.writeframes(b''.join(frames))
         wf.close()
-
-
-if __name__ == '__main__':
-    AudioRecording().recording(1)
