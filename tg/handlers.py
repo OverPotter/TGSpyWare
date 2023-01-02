@@ -3,7 +3,7 @@ import asyncio
 import module
 from aiogram import types
 from tg_config import admin_id
-from dispatcher import dp
+from tg.dispatcher import dp
 
 
 async def activate():
@@ -28,10 +28,9 @@ async def support(message: types.Message):
                          f'/check - Checking System Status\n'
                          f'/pc_info - System characteristics\n'
                          f'/con_info - Connection characteristics\n'
-                         f'/proc_info - Running processes\n'
+                         f'/proc_info - List of running processes\n'
                          f'/screen - Desktop screenshot\n'
                          f'/audio - Record audio from a voice recorder for a minute\n'
-                         f'/process - List of running processes\n'
                          f'/exit - Shutting down the program before reboot\n')
 
 
