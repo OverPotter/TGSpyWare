@@ -14,9 +14,11 @@ class RegEdit:
                                        r'SOFTWARE\Microsoft\Windows\CurrentVersion\Run',
                                        0, KEY_ALL_ACCESS)
 
-    def create_autorun(self) -> None:
+    def create_autorun(self) -> bool:
         SetValueEx(self.key_reg, AUTORUN_NAME, 0, REG_SZ, self.autorun_path)
         CloseKey(self.key_reg)
+        return True
 
-    def delete_autorun(self) -> None:
+    def delete_autorun(self) -> bool:
         DeleteValue(self.key_reg, AUTORUN_NAME)
+        return True
