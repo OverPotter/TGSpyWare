@@ -7,6 +7,6 @@ class View:
         pass
 
     @staticmethod
-    def make_screenshot():
+    def make_screenshot() -> str:
         pyautogui.screenshot(SCREENSHOT_PATH)
         return SCREENSHOT_PATH

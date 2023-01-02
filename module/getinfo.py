@@ -13,7 +13,7 @@ class GetInfo:
         pass
 
     @staticmethod
-    def get_pc_info():
+    def get_pc_info() -> str:
         username = getpass.getuser()
         ip = socket.gethostbyname(socket.gethostname())
         mac = get_mac()
@@ -36,7 +36,7 @@ class GetInfo:
         return result
 
     @staticmethod
-    def get_connection_info():
+    def get_connection_info() -> str:
         start = datetime.now()
         inet = Speedtest()
 
@@ -53,5 +53,5 @@ class GetInfo:
         return result
 
     @staticmethod
-    def get_process():
+    def get_process() -> str:
         return ' '.join([line.decode("cp866", "ignore") for line in Popen("tasklist", stdout=PIPE).stdout.readlines()])

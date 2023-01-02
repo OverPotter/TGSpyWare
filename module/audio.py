@@ -9,7 +9,7 @@ class AudioRecording:
 
     # todo get params from command
     @staticmethod
-    def recording(second=5):
+    def recording(second: int = 5) -> str:
         chunk = 1024
         formats = pyaudio.paInt16
         channels = 2
