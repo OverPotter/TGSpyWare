@@ -2,7 +2,7 @@ import os
 import asyncio
 import module
 from aiogram import types
-from config import admin_id
+from tg_config import admin_id
 from dispatcher import dp
 
 

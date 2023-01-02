@@ -1,7 +1,7 @@
 import logging
 from aiogram import Bot, Dispatcher
 from aiogram.contrib.middlewares.logging import LoggingMiddleware
-from config import BOT_TOKEN
+from tg_config import BOT_TOKEN
 
 logging.basicConfig(level=logging.INFO)
 
