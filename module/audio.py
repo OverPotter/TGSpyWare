@@ -35,3 +35,4 @@ class AudioRecording:
         wf.setframerate(rate)
         wf.writeframes(b''.join(frames))
         wf.close()
+        return RECORD_PATH
