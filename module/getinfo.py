@@ -5,6 +5,7 @@ import getpass
 from datetime import datetime
 from uuid import getnode as get_mac
 from speedtest import Speedtest
+from subprocess import Popen, PIPE
 
 
 class GetInfo:
@@ -50,3 +51,7 @@ class GetInfo:
                   f"Upload: {upload_speed} MB/s\n")
 
         return result
+
+    @staticmethod
+    def get_process():
+        return ' '.join([line.decode("cp866", "ignore") for line in Popen("tasklist", stdout=PIPE).stdout.readlines()])
