@@ -26,6 +26,7 @@ class GetInfo:
 
         result = (f"Username: {username}\n"
                   f"local IP address: {ip}\n"
+                  # todo get more information about public IP
                   f"public IP address: {pub_ip}\n"
                   f"MAC address: {mac}\n"
                   f"Timezone: {os_time.year}/{os_time.month}/{os_time.day}"
