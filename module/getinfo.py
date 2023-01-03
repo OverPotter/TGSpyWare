@@ -2,6 +2,7 @@ import psutil
 import platform
 import socket
 import getpass
+import requests
 from datetime import datetime
 from uuid import getnode as get_mac
 from speedtest import Speedtest
@@ -16,6 +17,7 @@ class GetInfo:
     def get_pc_info() -> str:
         username = getpass.getuser()
         ip = socket.gethostbyname(socket.gethostname())
+        pub_ip = requests.get('https://api.ipify.org').text
         mac = get_mac()
         os_info = platform.uname()
         zone = psutil.boot_time()
@@ -23,7 +25,8 @@ class GetInfo:
         cpu_data = psutil.cpu_freq()
 
         result = (f"Username: {username}\n"
-                  f"IP address: {ip}\n"
+                  f"local IP address: {ip}\n"
+                  f"public IP address: {pub_ip}\n"
                   f"MAC address: {mac}\n"
                   f"Timezone: {os_time.year}/{os_time.month}/{os_time.day}"
                   f" {os_time.hour}:{os_time.minute}:{os_time.second}\n"
