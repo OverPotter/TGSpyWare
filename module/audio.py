@@ -7,7 +7,6 @@ class AudioRecording:
     def __int__(self):
         pass
 
-    # todo get params from command
     @staticmethod
     def recording(second: int = 5) -> str:
         chunk = 1024
