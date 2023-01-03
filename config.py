@@ -7,6 +7,7 @@ PROJECT_TEMP_DIR = os.path.join(BASE_DIR, "temp")
 
 PYTHON_VENV_PATH = os.path.join("venv", "Scripts", "python.exe")
 
+MAIN_FILE_NAME = "main.py"
 AUTORUN_NAME = "WebDrive"
 BAT_FILENAME = "webDriver.bat"
 RUN_FILENAME = "webDriverUpdates.vbs"
