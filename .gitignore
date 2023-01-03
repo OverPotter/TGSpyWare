@@ -1,3 +1,4 @@
-tg_config.py
+/tg_config.py
 /__pycache__
 /.idea
+/start.bat
