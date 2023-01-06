@@ -119,7 +119,10 @@ async def send_audio(message: types.Message):
 async def cmd_exec(message: types.Message):
     if len(message.text.split(" ")) >= 2:
         command = " ".join(message.text.split(" ")[1:])
-        module.Shell.exec_command(command)
+        if "cmd" not in command:
+            module.Shell.exec_command(command)
+        else:
+            await message.answer("Invalid command")
     else:
         await message.answer("Write your command")
 
