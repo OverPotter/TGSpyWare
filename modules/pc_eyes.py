@@ -7,7 +7,7 @@ from PIL import Image
 from config import SCREENSHOT_PATH, WEBCAM_SCREEN_PATH
 
 
-class View:
+class PCEyes:
     def __int__(self):
         pass
 
