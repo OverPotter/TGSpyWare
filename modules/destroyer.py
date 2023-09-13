@@ -1,6 +1,8 @@
 import os
+import time
 import subprocess
-from config import BASE_DIR, DESTROYER_FILE_NAME
+from datetime import datetime
+from config import TASK_NAME, DESTROYER_FILENAME, BASE_DIR
 
 
 class Destroyer:
@@ -8,15 +10,16 @@ class Destroyer:
         pass
 
     @staticmethod
-    def delete_the_program():
-        # first from venv
-        interpreters = (subprocess.check_output("where python", shell=True).decode()).split()
+    def __create_file_destroyer():
+        with open(DESTROYER_FILENAME, "w") as f:
+            f.write(f"@echo off\n"
+                    f"SCHTASKS /Delete /TN {TASK_NAME} /F\n"
+                    f"rmdir /s /q {BASE_DIR}")
 
-        with open(DESTROYER_FILE_NAME, "w") as f:
-            f.write("""
-        import os
-        os.system(f"rmdir /s /q {os.path.dirname(os.path.abspath(__file__))}")
-            """)
+    def delete_the_program(self):
+        self.__create_file_destroyer()
 
-        if len(interpreters) > 1:
-            os.system(f"{interpreters[-1]} {os.path.join(BASE_DIR, DESTROYER_FILE_NAME)}")
+        unix_timestamp = time.time() + 60
+        scheduled_time = datetime.fromtimestamp(unix_timestamp).strftime("%H:%M")
+
+        subprocess.run(rf"SCHTASKS /Create /SC ONCE /ST {scheduled_time} /F /TN {TASK_NAME} /TR {os.path.join(BASE_DIR, DESTROYER_FILENAME)}")
