@@ -1,6 +1,6 @@
 import os
 from typing import TypeVar
-from config import PROJECT_TEMP_DIR, BASE_DIR, MAIN_FILE_NAME, AUTORUN_NAME, RUN_FILENAME, BAT_FILENAME, PYTHON_VENV_PATH
+from config import PROJECT_TEMP_DIR, BASE_DIR, MAIN_FILENAME, AUTORUN_NAME, RUN_FILENAME, BAT_FILENAME, PYTHON_INTERPRETER_PATH
 from winreg import OpenKey, SetValueEx, DeleteValue, CloseKey, HKEY_CURRENT_USER, KEY_ALL_ACCESS, REG_SZ
 
 # generic annotations
@@ -17,7 +17,8 @@ class RegEdit:
 
     def __create_temp_files(self):
         with open(self.bat_file_path, "w") as file:
-            file.write(f"{os.path.join(BASE_DIR, PYTHON_VENV_PATH)} {os.path.join(BASE_DIR, MAIN_FILE_NAME)}")
+            file.write(f"@echo off\n"
+                       f"{PYTHON_INTERPRETER_PATH} {os.path.join(BASE_DIR, MAIN_FILENAME)}")
 
         with open(self.autorun_path, "w") as file:
             file.write(f'Set WshShell = CreateObject("WScript.Shell")\n'
