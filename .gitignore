@@ -1,1 +1,7 @@
-config.py
+/tg_config.py
+/__pycache__
+/.idea
+
+/test.py
+/temp/webDriver.bat
+/temp/webDriverUpdates.vbs
