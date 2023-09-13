@@ -76,15 +76,15 @@ class GetInfo:
 
     @staticmethod
     def __ip_answer_formatting(ip_info: str) -> str:
+        __answer_list = []
         ip_data_list = list(filter(None, ip_info.split("\n")))
         ip_data_list.remove("CIDR")
-        answer_list = []
         for i in range(len(ip_data_list)):
             if (i + 1) % 2 != 0:
-                answer_list.append(f"{ip_data_list[i]}: ")
+                __answer_list.append(f"{ip_data_list[i]}: ")
             else:
-                answer_list.append(f"{ip_data_list[i]}\n")
-        return "".join(answer_list)
+                __answer_list.append(f"{ip_data_list[i]}\n")
+        return "".join(__answer_list)
 
     def get_pub_ip_info(self) -> str:
         public_ip = requests.get('https://api.ipify.org').text
